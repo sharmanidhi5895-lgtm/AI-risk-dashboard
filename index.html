@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Driven Risk Prediction Dashboard — Nidhi Sharma, MBA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1a1916;
+    --text2: #6b6a64;
+    --text3: #9b9a94;
+    --accent: #1a1916;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --orange: #d4650a;
+    --orange-bg: #fef3e8;
+    --green: #2d7d46;
+    --green-bg: #edf7f1;
+    --blue: #1d5fa8;
+    --blue-bg: #eef4fd;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .header { background: var(--text); color: #fff; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .header-left h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .header-left p { font-size: 12px; opacity: 0.55; margin-top: 3px; font-family: 'DM Mono', monospace; }
+  .header-right { display: flex; gap: 6px; flex-wrap: wrap; }
+  .stage-chip { font-size: 11px; font-family: 'DM Mono', monospace; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.75); padding: 4px 10px; border-radius: 20px; }
+
+  .main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px; flex-wrap: wrap; }
+  .tab { flex: 1; min-width: 120px; padding: 9px 14px; border-radius: 7px; font-size: 13px; font-weight: 500; border: none; background: transparent; cursor: pointer; color: var(--text2); display: flex; align-items: center; gap: 7px; justify-content: center; transition: all 0.15s; }
+  .tab:hover { background: var(--surface2); color: var(--text); }
+  .tab.active { background: var(--text); color: #fff; }
+  .tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .pane { display: none; }
+  .pane.active { display: block; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
+  .card-title span { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+
+  .metric { background: var(--surface2); border-radius: var(--radius-sm); padding: 1rem; }
+  .metric-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 5px; }
+  .metric-value { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; color: var(--text); }
+  .metric-value.danger { color: var(--red); }
+  .metric-value.success { color: var(--green); }
+
+  .range-group { margin-bottom: 12px; }
+  .range-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .range-name { font-size: 13px; color: var(--text); font-weight: 500; }
+  .range-num { font-size: 13px; font-family: 'DM Mono', monospace; font-weight: 500; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; min-width: 36px; text-align: center; }
+  input[type=range] { width: 100%; accent-color: var(--text); height: 4px; cursor: pointer; }
+
+  .run-btn { width: 100%; padding: 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; background: var(--text); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; margin-top: 1rem; letter-spacing: -0.01em; transition: opacity 0.15s; }
+  .run-btn:hover { opacity: 0.85; }
+
+  .risk-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-name { font-size: 13px; font-weight: 500; flex: 1.2; }
+  .risk-bar-wrap { flex: 2; height: 7px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .risk-bar { height: 100%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .risk-pct { font-size: 13px; font-weight: 600; font-family: 'DM Mono', monospace; min-width: 38px; text-align: right; }
+  .badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; min-width: 62px; text-align: center; }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-orange { background: var(--orange-bg); color: var(--orange); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+
+  .heatmap { display: grid; grid-template-columns: 72px repeat(4, 1fr); gap: 4px; margin: 12px 0; }
+  .hm-cell { border-radius: 6px; height: 54px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; text-align: center; padding: 4px; line-height: 1.3; }
+  .hm-axis { font-size: 10px; color: var(--text3); display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-family: 'DM Mono', monospace; text-align: right; }
+  .hm-axis-top { font-size: 10px; color: var(--text3); display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .mit-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .mit-item:last-child { border-bottom: none; }
+  .mit-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .mit-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .mit-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  .info-banner { background: var(--blue-bg); border: 1px solid #c3d8f3; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--blue); margin-bottom: 1rem; line-height: 1.5; }
+
+  .footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>AI-Driven Risk Prediction &amp; Mitigation</h1>
+    <p>MBA Minor Project — Nidhi Sharma · Amity University Online</p>
+  </div>
+  <div class="header-right">
+    <span class="stage-chip">Stage 1 Data</span>
+    <span class="stage-chip">Stage 2 Identify</span>
+    <span class="stage-chip">Stage 3 Model</span>
+    <span class="stage-chip">Stage 4 Prioritize</span>
+    <span class="stage-chip">Stage 5 Mitigate</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('input')" id="tab-input">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      Input data
+    </button>
+    <button class="tab" onclick="showTab('predict')" id="tab-predict">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-8 4 4 4-6 4 5"/></svg>
+      Risk prediction
+    </button>
+    <button class="tab" onclick="showTab('matrix')" id="tab-matrix">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Priority matrix
+    </button>
+    <button class="tab" onclick="showTab('mitigate')" id="tab-mitigate">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Mitigation plan
+    </button>
+  </div>
+
+  <!-- INPUT PANE -->
+  <div class="pane active" id="pane-input">
+    <div class="info-banner">
+      &#9432; Adjust each slider to reflect your project's current conditions. <strong>0 = no risk, 100 = maximum risk.</strong> Then click "Run AI Risk Model" to generate predictions.
+    </div>
+    <div class="card">
+      <div class="card-title">Stage 1–2 <span>Data collection &amp; risk identification</span></div>
+
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">🚚 Supplier reliability issues</span><span class="range-num" id="v_supplier">65</span></div>
+        <input type="range" min="0" max="100" value="65" step="1" id="r_supplier" oninput="document.getElementById('v_supplier').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">🔧 Equipment condition risk</span><span class="range-num" id="v_equip">45</span></div>
+        <input type="range" min="0" max="100" value="45" step="1" id="r_equip" oninput="document.getElementById('v_equip').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">💰 Material price volatility</span><span class="range-num" id="v_cost">55</span></div>
+        <input type="range" min="0" max="100" value="55" step="1" id="r_cost" oninput="document.getElementById('v_cost').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">👥 Workforce availability risk</span><span class="range-num" id="v_workforce">30</span></div>
+        <input type="range" min="0" max="100" value="30" step="1" id="r_workforce" oninput="document.getElementById('v_workforce').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">📅 Schedule complexity</span><span class="range-num" id="v_schedule">70</span></div>
+        <input type="range" min="0" max="100" value="70" step="1" id="r_schedule" oninput="document.getElementById('v_schedule').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">📈 Market demand fluctuation</span><span class="range-num" id="v_market">40</span></div>
+        <input type="range" min="0" max="100" value="40" step="1" id="r_market" oninput="document.getElementById('v_market').textContent=this.value">
+      </div>
+      <div class="range-group">
+        <div class="range-header"><span class="range-name">📋 Regulatory / compliance risk</span><span class="range-num" id="v_reg">20</span></div>
+        <input type="range" min="0" max="100" value="20" step="1" id="r_reg" oninput="document.getElementById('v_reg').textContent=this.value">
+      </div>
+
+      <button class="run-btn" onclick="runModel()">Run AI Risk Model →</button>
+    </div>
+  </div>
+
+  <!-- PREDICTION PANE -->
+  <div class="pane" id="pane-predict">
+    <div class="card">
+      <div class="card-title">Stage 3 <span>AI risk prediction scores</span></div>
+      <div class="grid-4" style="margin-bottom:1.25rem">
+        <div class="metric"><div class="metric-label">Overall risk score</div><div class="metric-value danger" id="m_overall">—</div></div>
+        <div class="metric"><div class="metric-label">Critical risks</div><div class="metric-value" id="m_critical">—</div></div>
+        <div class="metric"><div class="metric-label">Delay probability</div><div class="metric-value danger" id="m_delay">—</div></div>
+        <div class="metric"><div class="metric-label">Cost overrun risk</div><div class="metric-value danger" id="m_cost_m">—</div></div>
+      </div>
+      <div id="risk-bars"><p style="font-size:13px;color:var(--text3)">Run the model to see predictions.</p></div>
+    </div>
+  </div>
+
+  <!-- MATRIX PANE -->
+  <div class="pane" id="pane-matrix">
+    <div class="card">
+      <div class="card-title">Stage 4 <span>Probability-impact matrix</span></div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Risks are automatically placed based on their predicted probability and impact scores. Red zone = needs immediate action.</p>
+      <div id="heatmap-area"><p style="font-size:13px;color:var(--text3)">Run the model first to populate this matrix.</p></div>
+    </div>
+  </div>
+
+  <!-- MITIGATION PANE -->
+  <div class="pane" id="pane-mitigate">
+    <div class="card">
+      <div class="card-title">Stage 5 <span>AI-guided mitigation strategies</span></div>
+      <div id="mit-list"><p style="font-size:13px;color:var(--text3)">Run the model first to generate mitigation strategies.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Projected improvement <span>vs. no-AI baseline</span></div>
+      <div class="grid-2">
+        <div class="metric"><div class="metric-label">Estimated delay reduction</div><div class="metric-value success" id="m_delayred">—</div></div>
+        <div class="metric"><div class="metric-label">Cost adherence improvement</div><div class="metric-value success" id="m_costad">—</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--text3);margin-top:10px;font-family:'DM Mono',monospace">Based on simulated scenarios aligned with Odeck (2025) infrastructure overrun benchmarks.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">AI-Driven Risk Prediction &amp; Mitigation in Project Management · MBA Minor Project · Amity University Online · 2024</div>
+
+<script>
+function showTab(name) {
+  ['input','predict','matrix','mitigate'].forEach(t => {
+    document.getElementById('pane-'+t).classList.toggle('active', t===name);
+    document.getElementById('tab-'+t).classList.toggle('active', t===name);
+  });
+}
+
+function runModel() {
+  const v = {
+    supplier: parseInt(document.getElementById('r_supplier').value),
+    equip: parseInt(document.getElementById('r_equip').value),
+    cost: parseInt(document.getElementById('r_cost').value),
+    workforce: parseInt(document.getElementById('r_workforce').value),
+    schedule: parseInt(document.getElementById('r_schedule').value),
+    market: parseInt(document.getElementById('r_market').value),
+    reg: parseInt(document.getElementById('r_reg').value)
+  };
+
+  const risks = [
+    { name: 'Supplier disruption', val: clamp(Math.round(v.supplier*0.78 + v.market*0.15)), impact: v.supplier>60?'very high':v.supplier>35?'high':'medium' },
+    { name: 'Equipment failure',   val: clamp(Math.round(v.equip*0.70 + v.schedule*0.10)),  impact: v.equip>60?'high':v.equip>30?'medium':'low' },
+    { name: 'Cost overrun',        val: clamp(Math.round(v.cost*0.65 + v.supplier*0.20)),    impact: v.cost>55?'high':'medium' },
+    { name: 'Schedule delay',      val: clamp(Math.round(v.schedule*0.80 + v.workforce*0.25)), impact: v.schedule>65?'very high':'high' },
+    { name: 'Resource shortage',   val: clamp(Math.round(v.workforce*0.72 + v.schedule*0.18)), impact: v.workforce>50?'high':'medium' },
+    { name: 'Market demand shift', val: clamp(Math.round(v.market*0.60 + v.cost*0.22)),      impact: v.market>50?'medium':'low' },
+    { name: 'Regulatory risk',     val: clamp(Math.round(v.reg*0.85 + v.schedule*0.10)),     impact: v.reg>50?'high':'low' }
+  ];
+
+  const overall = Math.round(risks.reduce((s,r)=>s+r.val,0)/risks.length);
+  const critical = risks.filter(r=>r.val>=65).length;
+  const delayP   = clamp(Math.round(v.schedule*0.6 + v.supplier*0.25 + v.workforce*0.15));
+  const costP    = clamp(Math.round(v.cost*0.55 + v.supplier*0.3 + v.market*0.15));
+
+  document.getElementById('m_overall').textContent  = overall+'%';
+  document.getElementById('m_critical').textContent = critical;
+  document.getElementById('m_delay').textContent    = delayP+'%';
+  document.getElementById('m_cost_m').textContent   = costP+'%';
+
+  const sorted = [...risks].sort((a,b)=>b.val-a.val);
+  document.getElementById('risk-bars').innerHTML = sorted.map(r=>`
+    <div class="risk-row">
+      <span class="risk-name">${r.name}</span>
+      <div class="risk-bar-wrap"><div class="risk-bar" style="width:${r.val}%;background:${barColor(r.val)}"></div></div>
+      <span class="risk-pct" style="color:${barColor(r.val)}">${r.val}%</span>
+      <span class="badge ${badgeClass(r.val)}">${badgeLabel(r.val)}</span>
+    </div>`).join('');
+
+  buildHeatmap(sorted);
+  buildMitigation(sorted);
+
+  const delayRed = Math.round(8 + (overall/100)*14);
+  const costAdh  = Math.round(5 + (overall/100)*10);
+  document.getElementById('m_delayred').textContent = delayRed+'%';
+  document.getElementById('m_costad').textContent   = '+'+costAdh+'%';
+
+  showTab('predict');
+}
+
+function clamp(v){ return Math.min(99, Math.max(5, v)); }
+
+function barColor(v){ return v>=80?'#c0392b':v>=65?'#e74c3c':v>=40?'#d4650a':'#2d7d46'; }
+function badgeClass(v){ return v>=65?'badge-red':v>=40?'badge-orange':'badge-green'; }
+function badgeLabel(v){ return v>=65?'Critical':v>=40?'Moderate':'Low'; }
+
+function buildHeatmap(risks) {
+  const probRows  = ['Very high','High','Medium','Low'];
+  const impCols   = ['Low','Medium','High','Very high'];
+  const cellColors = [
+    ['#639922','#d4650a','#e74c3c','#c0392b'],
+    ['#639922','#d4650a','#e74c3c','#c0392b'],
+    ['#a8d070','#e8b04a','#d4650a','#e74c3c'],
+    ['#a8d070','#a8d070','#e8b04a','#d4650a']
+  ];
+  const textColors = [
+    ['#173404','#4a2600','#fdf0ee','#fdf0ee'],
+    ['#173404','#4a2600','#fdf0ee','#fdf0ee'],
+    ['#173404','#4a2600','#4a2600','#fdf0ee'],
+    ['#173404','#173404','#4a2600','#4a2600']
+  ];
+  const impMap = {'very high':3,'high':2,'medium':1,'low':0};
+
+  function getRisks(pi,ii){
+    return risks.filter(r=>{
+      const pb = r.val>=75?0:r.val>=55?1:r.val>=35?2:3;
+      const ib = impMap[r.impact]||1;
+      return pb===pi && ib===ii;
+    }).map(r=>r.name.split(' ')[0]).join(', ');
+  }
+
+  let html = '<div class="heatmap">';
+  html += '<div></div>';
+  impCols.forEach(l=>{ html+=`<div class="hm-axis-top">${l}</div>`; });
+  probRows.forEach((prob,pi)=>{
+    html+=`<div class="hm-axis">${prob}</div>`;
+    impCols.forEach((_,ii)=>{
+      const bg = cellColors[pi][ii];
+      const tc = textColors[pi][ii];
+      const names = getRisks(pi,ii);
+      html+=`<div class="hm-cell" style="background:${bg};color:${tc}">${names||''}</div>`;
+    });
+  });
+  html+='</div>';
+  html+='<p style="font-size:10px;color:var(--text3);text-align:center;font-family:DM Mono,monospace">← Impact level →&nbsp;&nbsp;|&nbsp;&nbsp;↑ Probability level ↑</p>';
+  html+='<div class="legend"><span class="legend-item"><span class="legend-dot" style="background:#c0392b"></span>Critical</span><span class="legend-item"><span class="legend-dot" style="background:#e74c3c"></span>High</span><span class="legend-item"><span class="legend-dot" style="background:#d4650a"></span>Moderate</span><span class="legend-item"><span class="legend-dot" style="background:#639922"></span>Low</span></div>';
+  document.getElementById('heatmap-area').innerHTML = html;
+}
+
+function buildMitigation(risks) {
+  const strats = [
+    { check: r=>r.name==='Supplier disruption'&&r.val>=40, icon:'🔁', bg:'#fff3ee', title:'Diversify supplier base', desc:'Engage 2–3 alternate vendors to reduce single-source dependency. Schedule quarterly supplier audits and maintain an approved vendor list.' },
+    { check: r=>r.name==='Equipment failure'&&r.val>=35,   icon:'🔧', bg:'#edf7f1', title:'Preventive maintenance schedule', desc:'Schedule maintenance during non-critical production windows. Track equipment health metrics via IoT sensors to predict failures before they occur.' },
+    { check: r=>r.name==='Cost overrun'&&r.val>=40,        icon:'💰', bg:'#eef4fd', title:'Contingency budget allocation', desc:'Reserve 10–15% contingency funds. Lock in contracts for volatile material categories where feasible and use hedging for currency risk.' },
+    { check: r=>r.name==='Schedule delay'&&r.val>=40,      icon:'📅', bg:'#fef3e8', title:'Critical path re-sequencing', desc:'Identify parallel task opportunities to compress the schedule. Add buffer milestones at key handoff points and set early warning triggers.' },
+    { check: r=>r.name==='Resource shortage'&&r.val>=35,   icon:'👥', bg:'#fbeaf0', title:'Cross-train workforce', desc:'Develop a flexible workforce pool with cross-functional training. Maintain a roster of on-call contractors for surge capacity requirements.' },
+    { check: r=>r.name==='Market demand shift'&&r.val>=35, icon:'📊', bg:'#eeedfe', title:'Demand sensing model', desc:'Use rolling demand forecasts updated weekly. Maintain flexible production capacity with modular scheduling to respond to market swings quickly.' },
+    { check: r=>r.name==='Regulatory risk'&&r.val>=30,     icon:'📋', bg:'#e1f5ee', title:'Compliance monitoring system', desc:'Assign a compliance officer to track regulatory changes. Automate documentation, reporting workflows, and maintain an audit-ready document store.' }
+  ];
+
+  const active = [];
+  risks.forEach(r=>{ strats.forEach(s=>{ if(s.check(r)) active.push(s); }); });
+
+  if(!active.length){
+    document.getElementById('mit-list').innerHTML='<p style="font-size:13px;color:var(--text2)">Risk levels are low. Maintain standard monitoring protocols and continue data collection.</p>';
+    return;
+  }
+  document.getElementById('mit-list').innerHTML = active.map(s=>`
+    <div class="mit-item">
+      <div class="mit-icon" style="background:${s.bg}">${s.icon}</div>
+      <div><div class="mit-title">${s.title}</div><div class="mit-desc">${s.desc}</div></div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
