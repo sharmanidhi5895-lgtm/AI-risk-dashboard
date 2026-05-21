@@ -8,7 +8,7 @@
 
 **A fully functional AI-powered risk prediction dashboard built as the practical implementation of an MBA research project on intelligent project risk management.**
 
-[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](docs/main_project-AI-Driven_risk_prediction_and_mitigation_in_Project_Management.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
+[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](docs/rename_main_project-AI-Driven_risk_prediction_and_mitigation_in_Project_Management.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
 
 </div>
 
