@@ -2,13 +2,13 @@
 
 <div align="center">
 
-![Project Banner](https://img.shields.io/badge/MBA%20Minor%20Project-Amity%20University%20Online-1a1916?style=for-the-badge)
+![Project Banner](https://img.shields.io/badge/MBA%20Project-Amity%20University%20Online-1a1916?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Complete-2d7d46?style=for-the-badge)
 ![Framework](https://img.shields.io/badge/Framework-AI%20%2B%20ML-d4650a?style=for-the-badge)
 
 **A fully functional AI-powered risk prediction dashboard built as the practical implementation of an MBA research project on intelligent project risk management.**
 
-[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](docs/project_report.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
+[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](main_project-AI-Driven_risk_prediction_and_mitigation_in_Project_Management.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
 
 </div>
 
