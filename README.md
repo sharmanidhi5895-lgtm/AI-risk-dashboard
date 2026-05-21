@@ -184,7 +184,7 @@ Feel free to reference or build upon this work with attribution.
 
 <div align="center">
 
-Made with ☕ by **Nidhi Sharma** · Amity University Online · 2024
+Made with ☕ by **Nidhi Sharma** 
 
 ⭐ If this project helped you, consider giving it a star!
 
