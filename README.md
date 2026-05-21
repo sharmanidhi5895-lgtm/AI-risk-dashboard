@@ -61,18 +61,18 @@ The research was submitted as a Minor Project Report for the **Master of Busines
                        ┌───────────────────────────▼──────┐
                        │                                  │
           ┌────────────▼─────┐              ┌─────────────┴────┐
-          │     STAGE 5      │              │     STAGE 4       │
-          │                  │              │                   │
-          │   AI-Guided      │◀────────────│     Risk          │
-          │   Mitigation     │             │  Prioritization   │
-          │   Planning       │             │                   │
-          │                  │             │ • Probability-    │
-          │ • Alt. sourcing  │             │   Impact Matrix   │
-          │ • Maintenance    │             │ • Risk heatmap    │
-          │ • Monte Carlo    │             │ • Severity        │
-          │   simulation     │             │   scoring         │
-          │ • Resource       │             │                   │
-          │   reallocation   │             └───────────────────┘
+          │     STAGE 5      │              │     STAGE 4      │
+          │                  │              │                  │
+          │   AI-Guided      │◀──────────── │     Risk         │
+          │   Mitigation     │              │  Prioritization  │
+          │   Planning       │              │                  │
+          │                  │              │ • Probability-   │
+          │ • Alt. sourcing  │              │   Impact Matrix  │
+          │ • Maintenance    │              │ • Risk heatmap   │
+          │ • Monte Carlo    │              │ • Severity       │
+          │   simulation     │              │   scoring        │
+          │ • Resource       │              │                  │
+          │   reallocation   │              └──────────────────┘
           │ • Continuous     │
           │   learning       │
           └──────────────────┘
