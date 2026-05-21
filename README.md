@@ -1,4 +1,4 @@
-# 🛡️ AI-Driven Risk Prediction & Mitigation in Project Management
+# AI-Driven Risk Prediction & Mitigation in Project Management
 
 <div align="center">
 
@@ -8,13 +8,13 @@
 
 **A fully functional AI-powered risk prediction dashboard built as the practical implementation of an MBA research project on intelligent project risk management.**
 
-[🚀 Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](docs/project_report.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
+[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/) &nbsp;·&nbsp; [📄 Read the Report](docs/project_report.pdf) &nbsp;·&nbsp; [⭐ Star this repo](#)
 
 </div>
 
 ---
 
-## 📌 Overview
+## Overview
 
 Traditional project risk management relies on manual assessment, expert judgement, and reactive responses — often too slow for fast-moving operational environments. This project proposes and implements a **5-stage AI-driven framework** that shifts organizations from reactive problem-solving to **predictive, data-informed risk governance**.
 
@@ -24,18 +24,18 @@ The research was submitted as a Minor Project Report for the **Master of Busines
 
 ---
 
-## ✨ Features
+## Features
 
-- 🎯 **Real-time risk scoring** across 7 project risk dimensions
-- 📊 **Probability-Impact Matrix** — auto-populated heatmap visualization
-- 🤖 **AI prediction model** using weighted logistic regression logic
-- 🛡️ **Mitigation strategy generator** — context-aware action recommendations
-- 📈 **Projected improvement metrics** benchmarked against real-world data
-- 💻 **Zero dependencies** — runs entirely in the browser, no install needed
+-  **Real-time risk scoring** across 7 project risk dimensions
+-  **Probability-Impact Matrix** — auto-populated heatmap visualization
+-  **AI prediction model** using weighted logistic regression logic
+-  **Mitigation strategy generator** — context-aware action recommendations
+-  **Projected improvement metrics** benchmarked against real-world data
+-  **Zero dependencies** — runs entirely in the browser, no install needed
 
 ---
 
-## 🧠 The 5-Stage AI Framework
+##  The 5-Stage AI Framework
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -82,7 +82,7 @@ The research was submitted as a Minor Project Report for the **Master of Busines
 
 ---
 
-## 🔬 AI Techniques Used
+## AI Techniques Used
 
 | Technique | Purpose | Stage |
 |---|---|---|
@@ -95,7 +95,7 @@ The research was submitted as a Minor Project Report for the **Master of Busines
 
 ---
 
-## 📊 Key Findings
+## Key Findings
 
 Based on simulated project data reflecting a mid-scale production environment:
 
@@ -112,7 +112,7 @@ Based on simulated project data reflecting a mid-scale production environment:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Option 1 — Use the live demo
 Click the **[Live Demo](https://sharmanidhi5895-lgtm.github.io/ai-risk-dashboard/)** button above. No installation needed.
@@ -131,7 +131,7 @@ open index.html
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 
 ```
 ai-risk-dashboard/
@@ -165,7 +165,7 @@ ai-risk-dashboard/
 
 ---
 
-## 🔮 Future Scope
+## Future Scope
 
 - [ ] Integration with IoT-based real-time monitoring systems
 - [ ] Deep learning models for enhanced prediction precision
@@ -175,7 +175,7 @@ ai-risk-dashboard/
 
 ---
 
-## 📄 License
+## License
 
 This project was created for academic purposes as part of an MBA program.  
 Feel free to reference or build upon this work with attribution.
